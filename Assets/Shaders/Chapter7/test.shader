@@ -151,8 +151,8 @@
 				fixed3 halfDir = normalize(tangentLightDir + tangentViewDir);
 				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tangentNormal, halfDir)), _Gloss);
 				
-				// return fixed4(ambient + diffuse + specular, 1.0);
-				return fixed4(_WorldSpaceLightPos0.xyz, 1.0);
+				// return fixed4(ambient + diffuse, 1.0);
+				return fixed4(tangentLightDir, 1.0);
 			}
 			
 			ENDCG
