@@ -41,6 +41,7 @@
 				float3 lightDir: TEXCOORD1;
 				float3 viewDir : TEXCOORD2;
 				float3 localPos : TEXCOORD3;
+				float3 test : TEXCOORD4;
 			};
 
 			// Unity doesn't support the 'inverse' function in native shader
@@ -105,8 +106,9 @@
 				float3x3 worldToTangent = float3x3(worldTangent, worldBinormal, worldNormal);
 
 				// Transform the light and view dir from world space to tangent space
-				o.lightDir = mul(worldToTangent, WorldSpaceLightDir(v.vertex));
+				o.lightDir = mul(worldToTangent, _WorldSpaceLightPos0.xyz);
 				o.viewDir = mul(worldToTangent, WorldSpaceViewDir(v.vertex));
+				o.test = v.tangent.xyz;
 				///
 				/// Note that the code below can only handle uniform scales, not including non-uniform scales
 				/// 
@@ -152,7 +154,7 @@
 				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tangentNormal, halfDir)), _Gloss);
 				
 				// return fixed4(ambient + diffuse, 1.0);
-				return fixed4(tangentLightDir, 1.0);
+				return fixed4(i.test.xyz, 1.0);
 			}
 			
 			ENDCG
