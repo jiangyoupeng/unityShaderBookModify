@@ -108,7 +108,9 @@
 				// Transform the light and view dir from world space to tangent space
 				o.lightDir = mul(worldToTangent, _WorldSpaceLightPos0.xyz);
 				o.viewDir = mul(worldToTangent, WorldSpaceViewDir(v.vertex));
-				o.test = v.tangent.xyz;
+				// o.test = v.tangent.xyz;
+				o.test = v.normal;
+
 				///
 				/// Note that the code below can only handle uniform scales, not including non-uniform scales
 				/// 
@@ -153,8 +155,9 @@
 				fixed3 halfDir = normalize(tangentLightDir + tangentViewDir);
 				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tangentNormal, halfDir)), _Gloss);
 				
-				// return fixed4(ambient + diffuse, 1.0);
+				return fixed4(ambient + diffuse + specular, 1.0);
 				return fixed4(i.test.xyz, 1.0);
+				// return fixed4(0., 0., i.test.z, 1.0);
 			}
 			
 			ENDCG
